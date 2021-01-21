@@ -1,0 +1,48 @@
+@page
+@using FSSCM.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using FSSCM.Web.Pages.Customers.CustomerTagBTOs
+@using FSSCM.Localization
+@using FSSCM.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<FSSCMResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["CustomerTagBTOs"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:CustomerTagBTOs"].Value);
+    PageLayout.Content.MenuItemName = FSSCMMenus.CustomerTagBTOs;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Customers/CustomerTagBTOs/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Customers/CustomerTagBTOs/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["CustomerTagBTOs"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+			    @if (await Authorization.IsGrantedAsync(FSSCMPermissions.CustomerTagBTOs.Create))
+                {
+                <abp-button id="NewCustomerTagBTOsButton"
+                            text="@L["CreateCustomerTagBTOs"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="CustomerTagBTOsTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

@@ -1,0 +1,48 @@
+@page
+@using FSSCM.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using FSSCM.Web.Pages.Customer.Customer
+@using FSSCM.Localization
+@using FSSCM.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<FSSCMResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["Customer"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Customer"].Value);
+    PageLayout.Content.MenuItemName = FSSCMMenus.Customer;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Customer/Customer/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Customer/Customer/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Customer"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+			    @if (await Authorization.IsGrantedAsync(FSSCMPermissions.Customer.Create))
+                {
+                <abp-button id="NewCustomerButton"
+                            text="@L["CreateCustomer"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="CustomerTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>
